@@ -1,0 +1,45 @@
+<ion-row>
+  <card-actionable
+    *ngIf="!isDelegated"
+    [imageLeft]="false"
+    [imageName]="'tezos-coins.svg'"
+    [text]="
+      'account-transaction-list.not-delegated_card.text'
+        | translate
+          : {
+              amount: delegateAmount | amountConverter: { protocol: wallet.protocol, maxDigits: 3 } | async
+            }
+    "
+    [heading]="
+      'account-transaction-list.not-delegated_card.heading'
+        | translate
+          : {
+              amount: delegateAmount | amountConverter: { protocol: wallet.protocol, maxDigits: 3 } | async
+            }
+    "
+    tappable
+    (click)="undelegatedClick()"
+  ></card-actionable>
+
+  <card-actionable
+    *ngIf="isDelegated"
+    [imageLeft]="true"
+    [imageName]="'tezos-baking.svg'"
+    [text]="
+      'account-transaction-list.has-delegated_card.text'
+        | translate
+          : {
+              amount: delegateAmount | amountConverter: { protocol: wallet.protocol, maxDigits: 3 } | async
+            }
+    "
+    [heading]="
+      'account-transaction-list.has-delegated_card.heading'
+        | translate
+          : {
+              amount: delegateAmount | amountConverter: { protocol: wallet.protocol, maxDigits: 3 } | async
+            }
+    "
+    tappable
+    (click)="delegatedClick()"
+  ></card-actionable>
+</ion-row>

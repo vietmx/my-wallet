@@ -1,0 +1,81 @@
+.label-stacked,
+.item-md.item-toggle ion-label,
+.item-ios.item-toggle ion-label {
+  font-size: 14px;
+}
+.font--size__large {
+  font-size: large;
+}
+
+.to-address__item {
+  ion-textarea {
+    font-size: 12px;
+  }
+}
+.address-to__buttons {
+  padding: 4px 0 0 0;
+}
+.amount__container {
+  .item-inner {
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
+  }
+  ion-input {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 0;
+    --padding-top: 12px;
+  }
+  .md {
+    ion-input {
+      --padding-bottom: 0;
+    }
+  }
+  .amount--container__input,
+  .amount--container__input .item-inner {
+    padding-right: 0;
+  }
+}
+.amount__container,
+.to__container {
+  padding-top: 8px;
+}
+.error--container {
+  padding-bottom: 8px;
+}
+ion-avatar {
+  height: 40px;
+  min-height: 40px;
+  width: 40px;
+  min-width: 40px;
+}
+.range-slider {
+  --bar-background: rgba(var(--ion-color-secondary-rgb), 0.12);
+  --bar-background-active: var(--ion-color-primary);
+}
+
+.advanced-item {
+  --border-color: var(--ion-color-primary);
+}
+ion-card {
+  padding: 12px;
+}
+.divider--container {
+  padding-top: 8px;
+}
+.native-textarea.sc-ion-textarea-md {
+  padding-top: 0;
+}
+ion-textarea {
+  --padding-top: 0;
+}
+
+ion-content {
+  --padding-bottom: 108px;
+}
+.collectible--img {
+  width: 25vw;
+  height: auto;
+  object-fit: cover;
+  max-height: 180px;
+}

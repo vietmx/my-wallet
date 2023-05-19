@@ -1,0 +1,35 @@
+<ion-header class="ion-no-border">
+  <ion-grid class="ion-no-padding">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+      <ion-title>{{ 'select-wallet.title' | translate }}</ion-title>
+    </ion-toolbar>
+  </ion-grid>
+</ion-header>
+
+<ion-content>
+  <ion-grid fixed="true" class="ion-no-padding">
+    <p [innerHTML]="descriptionKey | translate" class="ion-padding-horizontal"></p>
+    <ion-text color="primary">
+      <p class="font--weight__bold ion-padding-horizontal">
+        {{ 'select-wallet.compatible_label' | translate }}
+      </p>
+    </ion-text>
+    <ion-list lines="none" class="ion-margin-top" *ngFor="let wallet of compatibleWallets">
+      <portfolio-item [wallet]="wallet" tappable (click)="onSelected(wallet)"></portfolio-item>
+    </ion-list>
+
+    <ng-container *ngIf="incompatibleWallets.length > 0">
+      <ion-text color="primary">
+        <p class="font--weight__bold ion-padding-horizontal">
+          {{ 'select-wallet.incompatible_label' | translate }}
+        </p>
+      </ion-text>
+      <ion-list lines="none" class="ion-margin-top" *ngFor="let wallet of incompatibleWallets">
+        <portfolio-item [wallet]="wallet" tappable (click)="onSelected(wallet)"></portfolio-item>
+      </ion-list>
+    </ng-container>
+  </ion-grid>
+</ion-content>

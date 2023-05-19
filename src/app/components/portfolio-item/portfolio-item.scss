@@ -1,0 +1,41 @@
+.expendable__container {
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+
+  -webkit-transition-property: -webkit-transform;
+  -moz-transition-property: -moz-transform;
+  -o-transition-property: -o-transform;
+  transition-property: transform;
+  &.icon--rotated {
+    transform: rotate(180deg);
+  }
+}
+
+p,
+ion-label {
+  margin: 0;
+}
+ion-badge {
+  margin: 4px 0 0 0;
+}
+.badge__margin {
+  margin: 0px 6px 0px 0px;
+}
+
+.porfolio-item__margin {
+  margin: 2px 0px 6px;
+}
+.symbol--icon {
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  left: 40px;
+  top: 40px;
+}
+ion-avatar {
+  margin: 8px 16px 8px 0;
+  min-height: 48px;
+  min-width: 48px;
+}

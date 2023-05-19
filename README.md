@@ -1,1 +1,1 @@
-# my-wallet
+# my-crypto-wallet

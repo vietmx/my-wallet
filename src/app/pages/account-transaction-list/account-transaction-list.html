@@ -1,0 +1,160 @@
+<ion-header class="ion-no-border">
+  <ion-grid class="ion-no-padding">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/tabs/portfolio"></ion-back-button>
+      </ion-buttons>
+      <ion-title>{{ wallet?.protocol.symbol }} {{ 'account-transaction-list.title' | translate }}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button id="edit-popover" (click)="presentEditPopover($event)" color="secondary">
+          <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-row style="display: block;"><portfolio-item [wallet]="wallet" [maxDigits]="0"></portfolio-item></ion-row>
+    <ion-row class="ion-padding-top ion-padding-horizontal action--container">
+      <ion-button *ngFor="let action of actions" color="secondary" (click)="action.start()" shape="round" size="small" fill="outline">
+        <ion-icon slot="start" [name]="action.context.icon"></ion-icon>
+        {{ action.context.name | translate }}
+      </ion-button>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+
+<ion-content no-bounce has-bouncing="false" forceOverscroll="false">
+  <ion-grid fixed="true" class="ion-no-padding action--container">
+    <tezos-delegation-card
+      *ngIf="wallet.protocol.identifier === mainProtocolSymbols.XTZ && balance"
+      [wallet]="wallet"
+      [isDelegated]="isKtDelegated"
+      [delegateAmount]="balance"
+      (onDelegatedClick)="openDelegationDetails()"
+      (onUndelegatedClick)="openDelegationDetails()"
+    ></tezos-delegation-card>
+    <card-actionable
+      *ngIf="wallet.protocol.identifier === subProtocolSymbols.XTZ_KT"
+      [imageLeft]="false"
+      [imageName]="'babylon-migration.svg'"
+      [text]="'account-transaction-list.migrate-babylon_card.text' | translate"
+      [heading]="'account-transaction-list.migrate-babylon_card.heading' | translate"
+      tappable
+      (click)="openPreparePage()"
+    ></card-actionable>
+
+    <widget-account-extended-details
+      *ngIf="accountExtendedDetails !== undefined"
+      [widget]="accountExtendedDetails"
+    ></widget-account-extended-details>
+
+    <transaction-list
+      [transactionType]="'pendingTransaction'"
+      [hasPendingTransactions]="hasPendingTransactions"
+      [transactions]="pendingTransactions"
+      [isRefreshing]="isRefreshing"
+      [initialTransactionsLoaded]="initialTransactionsLoaded"
+      [wallet]="wallet"
+    ></transaction-list>
+
+    <transaction-list
+      [transactionType]="'exchangeTransaction'"
+      [hasExchangeTransactions]="hasExchangeTransactions"
+      [transactions]="formattedExchangeTransactions"
+      [isRefreshing]="isRefreshing"
+      [initialTransactionsLoaded]="initialTransactionsLoaded"
+      [wallet]="wallet"
+    ></transaction-list>
+
+    <ion-row class="ion-align-items-center ion-padding-top">
+      <ion-col size="10" class="ion-padding-horizontal">
+        <ion-text class="font--weight__bold" color="primary">
+          <p>{{ 'account-transaction-list.transactions_label' | translate }}</p>
+        </ion-text>
+      </ion-col>
+
+      <ion-col size="1" class="justify--content__end ion-no-padding">
+        <ion-spinner *ngIf="isRefreshing && !showLinkToBlockExplorer" color="primary" name="dots"></ion-spinner>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="showLinkToBlockExplorer">
+      <ion-col class="ion-padding">
+        <ion-text class="font--weight__bold" color="secondary">
+          <p>{{ 'account-transaction-list.tx_not_loading' | translate }}</p>
+        </ion-text>
+        <ion-button (click)="openBlockexplorer()" fill="outline" color="secondary" shape="round" class="ion-margin-top">
+          <ion-icon name="open" slot="start"></ion-icon>
+          {{ 'account-transaction-list.pending-transactions.open-blockexplorer_label' | translate }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)"><ion-refresher-content></ion-refresher-content></ion-refresher>
+
+    <transaction-list
+      [transactionType]="'normalTransaction'"
+      [transactions]="transactions"
+      [isRefreshing]="isRefreshing"
+      [initialTransactionsLoaded]="initialTransactionsLoaded"
+      [wallet]="wallet"
+    ></transaction-list>
+    <ng-container *ngIf="isDesktop && infiniteEnabled && !infiniteScrollActivated">
+      <ion-button fill="clear" size="small" (click)="loadMoreTransactions()">
+        {{ 'account-transaction-list.load_more' | translate }}
+      </ion-button>
+    </ng-container>
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-grid>
+  <ion-fab vertical="bottom" slot="fixed">
+    <ng-container *ngIf="isMtPerelinActive">
+      <ion-row>
+        <ion-col>
+          <ion-button class="mt-perelin-button" expand="full" size="default" color="white" (click)="buyMtPerelin()" shape="round">
+            {{ 'swap.buy_label' | translate }}
+            <div>
+              {{ 'account-transaction-list.provided_by' | translate }}
+              <img src="https://www.mtpelerin.com/images/logo.svg" />
+            </div>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button class="mt-perelin-button" expand="full" size="default" color="white" (click)="sellMtPerelin()" shape="round">
+            {{ 'swap.sell_label' | translate }}
+            <div>
+              {{ 'account-transaction-list.provided_by' | translate }}
+              <img src="https://www.mtpelerin.com/images/logo.svg" />
+            </div>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ion-row>
+      <ion-col>
+        <ion-button id="receive" expand="full" size="default" color="primary" (click)="openReceivePage()" shape="round">
+          <ion-icon slot="start" src="./assets/custom-ion-icons/md-call_received.svg"></ion-icon>
+          {{ 'account-transaction-list.receive_label' | translate }}
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button
+          id="send"
+          expand="full"
+          size="default"
+          color="primary"
+          (click)="openPreparePage()"
+          [disabled]="balance?.toNumber() === 0"
+          shape="round"
+        >
+          <ion-icon slot="start" name="send-outline"></ion-icon>
+          {{ 'account-transaction-list.send_label' | translate }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-fab>
+</ion-content>

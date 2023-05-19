@@ -1,0 +1,11 @@
+<ion-item *ngIf="protocol" class="ion-no-padding" lines="none">
+  <airgap-currency-symbol class="item__image" [symbol]="protocol.symbol" [protocolIdentifier]="protocol.identifier" slot="start"></airgap-currency-symbol>
+  <ion-label>
+    <h2>
+      <strong>{{ protocol.name | translate }}</strong>
+      <span *ngIf="showSymbol">{{ protocol.symbol }}</span>
+    </h2>
+  </ion-label>
+
+  <ion-radio *ngIf="radioList" [value]="protocol.identifier" slot="end"></ion-radio>
+</ion-item>

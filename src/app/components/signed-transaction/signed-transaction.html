@@ -1,0 +1,43 @@
+<span>
+  <ng-container *ngIf="airGapTxs && airGapTxs.length > 1">
+    <ion-row class="ion-padding-bottom ion-text-center">
+      <ion-col size="4" class="content--align__center-center">
+        <h5>
+          {{ aggregatedInfo.totalAmount.toFixed() | amountConverter: { protocol: airGapTxs[0].protocolIdentifier, maxDigits: undefined } |
+          async }}
+        </h5>
+      </ion-col>
+      <ion-col size="4" class="content--align__center-center">
+        <h5>{{ aggregatedInfo.numberOfTxs }}</h5>
+      </ion-col>
+      <ion-col size="4" class="content--align__center-center">
+        <h5>{{ aggregatedInfo.totalFees.toFixed() | feeConverter: { protocol: airGapTxs[0].protocolIdentifier } | async }}</h5>
+      </ion-col>
+      <ion-col size="4">
+        <small>Amount</small>
+      </ion-col>
+      <ion-col size="4">
+        <small>Operations</small>
+      </ion-col>
+      <ion-col size="4">
+        <small>Fee</small>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+  <ng-container *ngIf="airGapTxs">
+    <airgap-from-to *ngFor="let airGapTx of airGapTxs" [transaction]="airGapTx"></airgap-from-to>
+  </ng-container>
+  <span *ngIf="fallbackActivated">
+    <ion-row>
+      <ion-col size="2" class="ion-margin-top">
+        <ion-icon class="warning-icon" color="dark" name="warning"></ion-icon>
+      </ion-col>
+      <ion-col>
+        {{ 'signed-transaction.transaction-unreadable' | translate }}
+      </ion-col>
+    </ion-row>
+    <p class="text--selectable typography--mono" ion-text color="blackLight">
+      {{ rawTxData.transaction }}
+    </p>
+  </span>
+</span>

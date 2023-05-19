@@ -1,0 +1,8 @@
+{
+  "name": "AirGap Wallet",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}

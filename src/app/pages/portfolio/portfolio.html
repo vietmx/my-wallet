@@ -1,0 +1,90 @@
+<ion-header class="ion-no-border">
+  <div *ngIf="shopBannerText.length > 0" class="shop-banner-wrapper" (click)="onClickShopBanner()">
+    <p class="shop-banner-text">{{ shopBannerText }}</p>
+  </div>
+  <ion-toolbar color="translucent">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen="true">
+  <ion-grid fixed="true" class="ion-no-padding">
+    <ng-container *ngIf="activeWallets | async as walletsArray">
+      <chart *ngIf="walletsArray.length > 0" [total]="total"></chart>
+    </ng-container>
+    <ion-toolbar color="translucent">
+      <current-wallet-group></current-wallet-group>
+    </ion-toolbar>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)"><ion-refresher-content></ion-refresher-content></ion-refresher>
+
+    <ng-container *ngIf="walletGroups | async as walletGroupsArray; else loading">
+      <ng-container *ngIf="walletGroupsArray.length; else noItems">
+        <ion-list class="walletGroups ion-no-padding" lines="none" *ngFor="let walletGroup of walletGroupsArray">
+          <ion-card>
+            <portfolio-item
+              *ngIf="walletGroup.mainWallet"
+              class="mainWallet"
+              [wallet]="walletGroup.mainWallet"
+              tappable
+              (click)="openDetail(walletGroup.mainWallet)"
+            ></portfolio-item>
+            <portfolio-item
+              *ngFor="let subWallet of walletGroup.subWallets | walletFilter: { network: walletGroup.mainWallet?.protocol?.options?.network } | async"
+              [wallet]="subWallet"
+              tappable
+              (click)="openDetail(walletGroup.mainWallet, subWallet)"
+            ></portfolio-item>
+          </ion-card>
+        </ion-list>
+      </ng-container>
+      <ng-template #noItems>
+        <empty-state
+          *ngIf="isDesktop"
+          [text]="'portfolio.empty-state_desktop_text' | translate"
+          [imageName]="'signer-vault-ledger-desktop.svg'"
+          [fullHeight]="true"
+        ></empty-state>
+        <empty-state
+          *ngIf="!isDesktop"
+          [text]="'portfolio.empty-state_text' | translate"
+          [imageName]="'sync_wallet_onboarding_1.svg'"
+          [fullHeight]="true"
+        ></empty-state>
+      </ng-template>
+    </ng-container>
+    <ng-template #loading>
+      <ion-list lines="none" class="ion-margin-top">
+        <ion-card>
+          <portfolio-item></portfolio-item>
+        </ion-card>
+        <ion-card>
+          <portfolio-item></portfolio-item>
+        </ion-card>
+        <ion-card>
+          <portfolio-item></portfolio-item>
+        </ion-card>
+        <ion-card>
+          <portfolio-item></portfolio-item>
+        </ion-card>
+      </ion-list>
+    </ng-template>
+  </ion-grid>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ng-container *ngIf="wallets | async | walletFilter: { status: AirGapWalletStatus.ACTIVE } | async as walletsArray">
+      <ion-fab-button *ngIf="walletsArray.length > 0" id="add-more-coins-button" color="secondary" (click)="openAccountAddPage()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+      <ion-button
+        *ngIf="walletsArray.length === 0"
+        id="add-initial-coin-button"
+        color="secondary"
+        (click)="openAccountAddPage()"
+        shape="round"
+      >
+        <ion-icon slot="start" name="add"></ion-icon>
+        {{ 'portfolio.add-coins_label' | translate }}
+      </ion-button>
+    </ng-container>
+  </ion-fab>
+</ion-content>

@@ -1,0 +1,28 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'introduction-push.title' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" color="secondary">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-row class="row--height__100 ion-justify-content-center ion-align-items-center ">
+    <ion-col class="ion-text-center">
+      <h3 class="ion-padding-horizontal ion-no-margin" [innerHTML]="'introduction-push.heading' | translate"></h3>
+      <img src="./assets/img/push_onboarding.svg" />
+      <p class="ion-padding-horizontal">
+        {{ 'introduction-push.description' | translate }}
+      </p>
+      <ion-button shape="round" color="primary" (click)="promptForPushPermission()">
+        {{ 'introduction-push.grant-permission_label' | translate }}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>

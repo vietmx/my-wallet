@@ -1,0 +1,78 @@
+.loading-header {
+  color: white;
+  font-weight: 300;
+  width: 100%;
+  text-align: center;
+  ion-spinner * {
+    width: 28px;
+    height: 28px;
+    stroke: #fff !important;
+  }
+}
+.loading-content {
+  color: white;
+  font-weight: 300;
+  width: 100%;
+  margin-top: 20vh;
+  text-align: center;
+  ion-spinner * {
+    width: 28px;
+    height: 28px;
+  }
+}
+.sc-ion-card-ios-h,
+.sc-ion-card-md-h {
+  padding: 4px 0;
+  margin-bottom: 16px;
+  margin-top: 0px;
+  p {
+    font-weight: inherit;
+  }
+  ion-item {
+    padding-bottom: 4px;
+  }
+}
+.list-ios {
+  margin: 0;
+}
+ion-card {
+  margin: 0 8px 16px;
+}
+.container__empty {
+  img {
+    height: 30vh;
+  }
+}
+/* FAB with a button, bottom padding fix for ios devices, reset for FAB on page with bottom navigation */
+.content-ios ion-fab[bottom] {
+  bottom: 10px;
+}
+.portfolio--hero {
+  background: url('/assets/img/portfolio-lines.svg') no-repeat;
+  height: 25vh;
+  background-position: bottom;
+  h1 {
+    margin-bottom: 48px;
+    font-weight: bold;
+  }
+}
+
+.shop-banner-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(112, 228, 206);
+  padding: 6px 10px;
+  margin-top: constant(safe-area-inset-top);
+  margin-top: env(safe-area-inset-top);
+
+  cursor: pointer;
+
+  .shop-banner-text {
+    color: black;
+    text-align: center;
+    font-weight: 400;
+    padding: 0px;
+    margin: 0px;
+  }
+}
